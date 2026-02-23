@@ -1,26 +1,27 @@
-// ─── Navigation burger menu ───
-const burger = document.getElementById('burger');
+const burger   = document.getElementById('burger');
 const navLinks = document.getElementById('nav-links');
+
+function openMenu() {
+  burger.classList.add('active');
+  navLinks.classList.add('open');
+  document.body.classList.add('menu-open');
+  burger.setAttribute('aria-expanded', 'true');
+}
+
+function closeMenu() {
+  burger.classList.remove('active');
+  navLinks.classList.remove('open');
+  document.body.classList.remove('menu-open');
+  burger.setAttribute('aria-expanded', 'false');
+}
 
 if (burger && navLinks) {
   burger.addEventListener('click', () => {
-    burger.classList.toggle('active');
-    navLinks.classList.toggle('open');
+    navLinks.classList.contains('open') ? closeMenu() : openMenu();
   });
-
-  // Fermer le menu au clic sur un lien (mobile)
-  navLinks.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      burger.classList.remove('active');
-      navLinks.classList.remove('open');
-    });
-  });
-
-  // Fermer en cliquant en dehors du menu
-  document.addEventListener('click', (e) => {
-    if (!burger.contains(e.target) && !navLinks.contains(e.target)) {
-      burger.classList.remove('active');
-      navLinks.classList.remove('open');
-    }
-  });
+  // Fermer au clic sur un lien
+  navLinks.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', closeMenu));
 }
+
+// Fermer avec Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
